@@ -51,6 +51,10 @@ var h = {
     rtn.transform = opts.transform || predefined.transform || 'lowercase';
 
     return rtn;
+  },
+  
+  resetWordList: function () {
+    return wordList = require('./xkpasswd-words.json');
   }
 }
 
@@ -61,7 +65,8 @@ module.exports = function (opts) {
   var pattern = o.pattern.split('');
   var uppercase = (o.transform && o.transform == 'uppercase');
   var password = [];
-
+  wordList = opts.wordList ||  h.resetWordList();
+  
   pattern.forEach(function (type) {
     var value;
     if (type === 'd') value = h.random(0, 9);
