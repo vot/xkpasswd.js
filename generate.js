@@ -1,4 +1,4 @@
-var wordList = require('./xkpasswd-words.json');
+var defaultWordList = require('./xkpasswd-words.json');
 
 // define helpers
 var h = {
@@ -6,7 +6,7 @@ var h = {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   },
 
-  getRandomWord: function () {
+  getRandomWord: function (wordList) {
     return wordList[h.random(0, wordList.length - 1)];
   },
 
@@ -51,10 +51,6 @@ var h = {
     rtn.transform = opts.transform || predefined.transform || 'lowercase';
 
     return rtn;
-  },
-  
-  resetWordList: function () {
-    return wordList = require('./xkpasswd-words.json');
   }
 }
 
@@ -65,14 +61,26 @@ module.exports = function (opts) {
   var pattern = o.pattern.split('');
   var uppercase = (o.transform && o.transform == 'uppercase');
   var password = [];
-  wordList = opts.wordList ||  h.resetWordList();
-  
+
+  var wordList = defaultWordList;
+
+  if (typeof opts.wordList === 'string') {
+    // this needs to support the following options:
+    // 1) "words.json"
+    // 2) "words.txt"
+    // 3) "artificial, coconut, fizz, buzz" (string of comma-separated words)
+  }
+
+  if (Array.isArray(opts.wordList)) {
+    wordList = opts.wordList;
+  }
+
   pattern.forEach(function (type) {
     var value;
     if (type === 'd') value = h.random(0, 9);
     if (type === 's') value = o.separator;
     if (type === 'w' || type == 'W') {
-      value = h.getRandomWord();
+      value = h.getRandomWord(wordList);
       if (o.transform && o.transform == 'alternate') uppercase = !uppercase;
       if (uppercase || type == 'W') {
         value = value.toUpperCase();
