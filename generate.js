@@ -1,3 +1,5 @@
+var fs = require('fs');
+var path = require('path');
 var defaultWordList = require('./xkpasswd-words.json');
 
 // define helpers
@@ -51,9 +53,58 @@ var h = {
     rtn.transform = opts.transform || predefined.transform || 'lowercase';
 
     return rtn;
+  },
+
+  // this needs to support the following options:
+  // 1) "words.json"
+  // 2) "words.txt"
+  // 3) "orange,banana, fizz, buzz" (string of comma-separated words)
+  readCustomWordList: function (input) {
+    var data;
+    var rtn = [];
+
+    if (Array.isArray(input)) {
+      data = input;
+    }
+
+    // parse string input
+    if (typeof input === 'string') {
+      var tmpWordList = input.split(',');
+
+      if (tmpWordList.length === 1) {
+        var targetFile = path.resolve(tmpWordList[0]);
+
+        if (targetFile.indexOf('.json') === targetFile.length - 5) {
+          data = require(targetFile);
+        }
+
+        if (targetFile.indexOf('.txt') === targetFile.length - 4) {
+          var fileContents = fs.readFileSync(targetFile).toString();
+          data = fileContents.split('\n');
+        }
+      }
+
+      if (!data) {
+        data = tmpWordList;
+      }
+    }
+
+    // if there's no data return false
+    if (!data) {
+      return false;
+    }
+
+    // remove empty
+    for (var i = 0; i < data.length; i++) {
+      var word = typeof data[i] === 'string' ? data[i].trim() : '';
+      if (word.length) {
+        rtn.push(word);
+      }
+    }
+
+    return rtn;
   }
 }
-
 
 module.exports = function (opts) {
   opts = opts || {};
@@ -64,15 +115,10 @@ module.exports = function (opts) {
 
   var wordList = defaultWordList;
 
-  if (typeof opts.wordList === 'string') {
-    // this needs to support the following options:
-    // 1) "words.json"
-    // 2) "words.txt"
-    // 3) "artificial, coconut, fizz, buzz" (string of comma-separated words)
-  }
+  var customWordList = h.readCustomWordList(opts.wordList);
 
-  if (Array.isArray(opts.wordList)) {
-    wordList = opts.wordList;
+  if (Array.isArray(customWordList) && customWordList.length) {
+    wordList = customWordList;
   }
 
   pattern.forEach(function (type) {
