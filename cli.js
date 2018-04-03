@@ -14,12 +14,16 @@ var options = {
 };
 
 // this should accept a comma-separated array of words or a reference to a file (json or text)
-var customWordList = cliArgs.opts.wordList || cliArgs.opts.wordlist || cliArgs.opts.words || cliArgs.opts.dict || cliArgs.opts.dictionary;
+var customWordList = cliArgs.opts.wordList ||
+  cliArgs.opts.wordlist ||
+  cliArgs.opts.words ||
+  cliArgs.opts.dict ||
+  cliArgs.opts.dictionary;
 if (typeof customWordList === 'string' && customWordList.length) {
   options.wordList = customWordList;
 }
 
-options.number = parseInt(options.number);
+options.number = parseInt(options.number, 10);
 if (typeof options.number !== 'number' || options.number < 1) {
   options.number = 1;
 }

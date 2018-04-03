@@ -1,5 +1,5 @@
 {
-  "extends": "eslint:recommended",
+  "extends": "airbnb-base",
   "root": true,
   "env": {
     "node": true
@@ -12,6 +12,14 @@
     "no-unused-vars": "warn",
     "constructor-super": "warn",
     "valid-typeof": "warn",
-    "no-console": "off"
+    "no-console": "off",
+    "no-var": "off",
+    "comma-dangle": "off",
+    "no-plusplus": "off",
+    "vars-on-top": "off",
+    "object-shorthand": "off",
+    "no-mixed-operators": "off",
+    "prefer-arrow-callback": "off",
+    "eqeqeq": "warn"
   }
 }

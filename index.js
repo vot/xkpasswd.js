@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 if (require.main === module) {
-  return require('./cli');
+  // eslint-disable-next-line global-require
+  require('./cli');
 }
 
 module.exports = require('./generate');
