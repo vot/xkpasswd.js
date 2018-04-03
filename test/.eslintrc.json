@@ -1,5 +1,11 @@
 {
     "env": {
         "mocha": true
+    },
+    "rules": {
+      "func-names": "off",
+      "no-path-concat": "off",
+      "prefer-template": "off",
+      "no-unused-expressions": "off"
     }
 }
