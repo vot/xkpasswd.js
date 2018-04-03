@@ -34,6 +34,9 @@ valuable=bear=difference=53
 console.log(xkpasswd({complexity: 5, separators: '#+-'}));
 addition#wheat#congress#manner#lonely#20
 
+console.log(xkpasswd({wordList: __dirname + '/myWordList.json'}));
+apple#grape#banana
+
 ```
 
 
@@ -45,7 +48,7 @@ globally (`npm install xkpasswd -g`).
 **CLI OPTIONS**
 
 ```
-xkpasswd --complexity <number> --separators <string> --pattern <string> --transform <string> --number <number>
+xkpasswd --complexity <number> --separators <string> --pattern <string> --transform <string> --number <number> --wordList <string>
 ```
 
 `xkp` alias for is also provided for convenience.
@@ -60,10 +63,13 @@ If specified `pattern` argument overrides the [pattern](#patterns) derived from 
 If `separators` are provided they are used instead of the standard set (see complexity levels).
 One separator is used per password, picked randomly from the provided set.
 
-You can set `transform` to `alternate` or `uppercase` to trigger case transformation.
+You can set `transform` option to `alternate` or `uppercase` to trigger case transformation.
 
-Finally, to generate multiple passwords at once you can specify the desired
+To generate multiple passwords at once you can specify the desired
 amount with the `number` argument. Defaults to 1.
+
+Finally if you'd like to use a custom list of words you can provide it
+as a JSON file, text file or an array via `wordList` function.
 
 <br />
 
@@ -99,6 +105,19 @@ $ xkpasswd -p wdwd
 adjective3solar6
 ```
 
+**EXAMPLE** Specify custom word list / dictionary
+
+```
+$ xkpasswd -wordList myWordList.json
+
+orange.apple.banana
+```
+
+```
+$ xkpasswd -dict myWordList.txt
+
+kiwi-strawberry-grape
+```
 
 **EXAMPLE** Specify complexity, custom separators and number of passwords
 
@@ -145,6 +164,12 @@ between words and expanded sets of separators.
 In addition level 6 alternates upper and lower case between words.
 
 ## Release notes
+
+v1.0.5
+
+- Added support for custom word lists
+- Improved linting profile
+
 
 v1.0.4
 
